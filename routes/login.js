@@ -30,12 +30,12 @@ router.get('/', function(req, res, next) {
             loginSchema.salida.respuesta = 'conexion no establecida ' + err;
         });
     if (loginSchema.salida.cogigoRespuesta == 0) {
-        let usersSchema = {
+        let usersSchema = new mongoose.Schema({
             _id: mongoose.Schema.Types.ObjectId,
             identificacion: String,
             password: String
-        }
-        let users = mongoose.model('UsuariosColaboradores', usersSchema)
+        }, { collection: 'UsuariosColaboradores' });
+        let users = mongoose.model('UsuariosColaboradores', usersSchema, )
         users.find({}).exec(function(err, users) {
             if (err) {
                 loginSchema.salida.cogigoRespuesta = 400;
