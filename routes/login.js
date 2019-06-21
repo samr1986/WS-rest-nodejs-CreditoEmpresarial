@@ -35,7 +35,7 @@ router.get('/', function(req, res, next) {
             identificacion: String,
             password: String
         }, { collection: 'UsuariosColaboradores' });
-        let users = mongoose.model('UsuariosColaboradores', usersSchema, )
+        let users = mongoose.model('usuarios', usersSchema)
         users.find({}).exec(function(err, users) {
             if (err) {
                 loginSchema.salida.cogigoRespuesta = 400;
