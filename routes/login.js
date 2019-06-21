@@ -15,7 +15,7 @@ let loginSchema = {
 };
 
 router.get('/', function(req, res, next) {
-    let creditoEmpresar = mongoose.connect(process.env.COSMOSDB_CONNSTR + "?ssl=true&replicaSet=globaldb", {
+    mongoose.connect(process.env.COSMOSDB_CONNSTR + "?ssl=true&replicaSet=globaldb", {
             auth: {
                 user: process.env.COSMODDB_USER,
                 password: process.env.COSMOSDB_PASSWORD
@@ -35,7 +35,7 @@ router.get('/', function(req, res, next) {
             identificacion: String,
             password: String
         })
-        let users = creditoEmpresar.model('Login', usersSchema, 'UsuariosColaboradores')
+        let users = mongoose.model('Login', usersSchema, 'UsuariosColaboradores')
         users.find({}).exec(function(err, users) {
             if (err) {
                 loginSchema.salida.cogigoRespuesta = 400;
