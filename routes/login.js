@@ -45,12 +45,13 @@ router.get('/', function(req, res, next) {
                 });
 
             });
+            res.send(loginSchema);
         })
         .catch((err) => {
             loginSchema.salida.codigoRespuesta = 200;
             loginSchema.salida.respuesta = 'conexion no establecida ' + err;
+            res.send(loginSchema);
         });
-    res.send(loginSchema);
 });
 
 module.exports = router;
