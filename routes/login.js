@@ -14,7 +14,7 @@ let loginSchema = {
     }
 };
 
-mongoose.connect(process.env.COSMOSDB_CONNSTR + "?ssl=true&replicaSet=globaldb", {
+let mongoConnect = mongoose.connect(process.env.COSMOSDB_CONNSTR + "?ssl=true&replicaSet=globaldb", {
         auth: {
             user: process.env.COSMODDB_USER,
             password: process.env.COSMOSDB_PASSWORD
@@ -30,7 +30,7 @@ mongoose.connect(process.env.COSMOSDB_CONNSTR + "?ssl=true&replicaSet=globaldb",
     });
 
 router.get('/', function(req, res, next) {
-    let conexion = mongoose.connection;
+    let conexion = mongoConnect.connection;
     conexion.on('error', function() {
         loginSchema.salida.cogigoRespuesta = 400;
         loginSchema.salida.respuesta = 'error conectandose a cosmos db ';
