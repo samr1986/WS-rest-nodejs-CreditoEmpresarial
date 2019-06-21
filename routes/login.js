@@ -14,26 +14,27 @@ let loginSchema = {
     }
 };
 
+mongoose.connect(process.env.COSMOSDB_CONNSTR + "?ssl=true&replicaSet=globaldb", {
+        auth: {
+            user: process.env.COSMODDB_USER,
+            password: process.env.COSMOSDB_PASSWORD
+        }
+    })
+    .then(() => {
+        loginSchema.salida.cogigoRespuesta = 0;
+        loginSchema.salida.respuesta = 'conexion establecida con exito';
+    })
+    .catch((err) => {
+        loginSchema.salida.cogigoRespuesta = 200;
+        loginSchema.salida.respuesta = 'conexion no establecida ' + err;
+    });
+let conexion = mongoose.connection;
+
 router.get('/', function(req, res, next) {
-    mongoose.connect(process.env.COSMOSDB_CONNSTR + "?ssl=true&replicaSet=globaldb", {
-            auth: {
-                user: process.env.COSMODDB_USER,
-                password: process.env.COSMOSDB_PASSWORD
-            }
-        })
-        .then(() => {
-            loginSchema.salida.cogigoRespuesta = 0;
-            loginSchema.salida.respuesta = 'conexion establecida con exito';
-        })
-        .catch((err) => {
-            loginSchema.salida.cogigoRespuesta = 200;
-            loginSchema.salida.respuesta = 'conexion no establecida ' + err;
-        });
     if (loginSchema.salida.cogigoRespuesta == 0) {
-        let conexion = mongoose.connection;
         conexion.on('error', function() {
             loginSchema.salida.cogigoRespuesta = 400;
-            loginSchema.salida.respuesta = 'error consultando (find) ';
+            loginSchema.salida.respuesta = 'error conectandose a cosmos db ';
         });
         conexion.once('open', function() {
             conexion.db.collection("UsuariosColaboradores", function(err, collection) {
