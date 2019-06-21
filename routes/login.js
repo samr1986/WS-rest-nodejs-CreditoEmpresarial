@@ -28,9 +28,9 @@ mongoose.connect(process.env.COSMOSDB_CONNSTR + "?ssl=true&replicaSet=globaldb",
         loginSchema.salida.cogigoRespuesta = 200;
         loginSchema.salida.respuesta = 'conexion no establecida ' + err;
     });
-let conexion = mongoose.connection;
 
 router.get('/', function(req, res, next) {
+    let conexion = mongoose.connection;
     conexion.on('error', function() {
         loginSchema.salida.cogigoRespuesta = 400;
         loginSchema.salida.respuesta = 'error conectandose a cosmos db ';
