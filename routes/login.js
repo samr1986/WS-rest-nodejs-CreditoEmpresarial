@@ -35,7 +35,7 @@ router.get('/', function(req, res, next) {
             password: String
         })
         let users = mongoose.model('UsuariosColaboradores', usersSchema)
-        users.find({}, function(err, users) {
+        users.find({}).exec(function(err, users) {
             if (err) {
                 loginSchema.salida.cogigoRespuesta = 400;
                 loginSchema.salida.respuesta = 'error consultando (find) ' + err;
