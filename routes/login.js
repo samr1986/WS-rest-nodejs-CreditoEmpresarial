@@ -35,7 +35,7 @@ router.get('/', function(req, res, next) {
             identificacion: String,
             password: String
         })
-        let users = db.model('Login', usersSchema, 'UsuariosColaboradores')
+        let users = creditoEmpresar.model('Login', usersSchema, 'UsuariosColaboradores')
         users.find({}).exec(function(err, users) {
             if (err) {
                 loginSchema.salida.cogigoRespuesta = 400;
