@@ -31,22 +31,20 @@ mongoose.connect(process.env.COSMOSDB_CONNSTR + "?ssl=true&replicaSet=globaldb",
 let conexion = mongoose.connection;
 
 router.get('/', function(req, res, next) {
-    if (loginSchema.salida.cogigoRespuesta == 0) {
-        conexion.on('error', function() {
-            loginSchema.salida.cogigoRespuesta = 400;
-            loginSchema.salida.respuesta = 'error conectandose a cosmos db ';
+    conexion.on('error', function() {
+        loginSchema.salida.cogigoRespuesta = 400;
+        loginSchema.salida.respuesta = 'error conectandose a cosmos db ';
+    });
+    conexion.once('open', function() {
+        conexion.db.collection("UsuariosColaboradores", function(err, collection) {
+            collection.find({}).toArray(function(err, data) {
+                console.log(data);
+                loginSchema.salida.cogigoRespuesta = 0;
+                loginSchema.salida.respuesta = data;
+            })
         });
-        conexion.once('open', function() {
-            conexion.db.collection("UsuariosColaboradores", function(err, collection) {
-                collection.find({}).toArray(function(err, data) {
-                    console.log(data);
-                    loginSchema.salida.cogigoRespuesta = 0;
-                    loginSchema.salida.respuesta = data;
-                })
-            });
 
-        });
-    }
+    });
     res.send(loginSchema)
 
 });
