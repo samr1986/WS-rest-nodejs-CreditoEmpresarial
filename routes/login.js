@@ -39,15 +39,20 @@ router.get('/', function(req, res, next) {
     conexion.once('open', function() {
         conexion.db.collection("UsuariosColaboradores", function(err, collection) {
             collection.find({ 'identificacion': loginSchema.entrada.usuario }).toArray(function(err, data) {
-                console.log(data);
-                loginSchema.salida.cogigoRespuesta = 0;
-                loginSchema.salida.respuesta = data;
+                loginSchema.salida.cogigoRespuesta = 500;
+                loginSchema.salida.respuesta = 'Logueo incorrecto';
+                if (data.length == 1) {
+                    if (data[0].password == loginSchema.entrada.password) {
+                        loginSchema.salida.cogigoRespuesta = 0;
+                        loginSchema.salida.respuesta = 'Logueo existoso';
+                    }
+
+                }
             })
         });
 
     });
-    res.send(loginSchema)
-
+    res.send(loginSchema);
 });
 
 module.exports = router;
