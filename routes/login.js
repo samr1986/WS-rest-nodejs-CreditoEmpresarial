@@ -31,6 +31,7 @@ router.get('/', function(req, res, next) {
         });
     if (loginSchema.salida.cogigoRespuesta == 0) {
         let usersSchema = new mongoose.Schema({
+            _id: mongoose.Schema.Types.ObjectId,
             identificacion: String,
             password: String
         })
