@@ -15,6 +15,8 @@ let loginSchema = {
 };
 
 router.get('/', function(req, res, next) {
+    loginSchema.entrada.usuario = req.query.usuario;
+    loginSchema.entrada.password = req.query.password;
     mongoose.connect(process.env.COSMOSDB_CONNSTR + "?ssl=true&replicaSet=globaldb", {
             auth: {
                 user: process.env.COSMODDB_USER,
@@ -36,7 +38,7 @@ router.get('/', function(req, res, next) {
     });
     conexion.once('open', function() {
         conexion.db.collection("UsuariosColaboradores", function(err, collection) {
-            collection.find({}).toArray(function(err, data) {
+            collection.find({ 'identificacion': loginSchema.entrada.usuario }).toArray(function(err, data) {
                 console.log(data);
                 loginSchema.salida.cogigoRespuesta = 0;
                 loginSchema.salida.respuesta = data;
