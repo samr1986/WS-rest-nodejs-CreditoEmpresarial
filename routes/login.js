@@ -30,20 +30,20 @@ router.get('/', function(req, res, next) {
             loginSchema.salida.respuesta = 'conexion no establecida ' + err;
         });
     if (loginSchema.salida.cogigoRespuesta == 0) {
-        let usersSchema = new mongoose.Schema({
-            _id: mongoose.Schema.Types.ObjectId,
-            identificacion: String,
-            password: String
-        }, { collection: 'UsuariosColaboradores' });
-        let users = mongoose.model('usuarios', usersSchema)
-        users.find({}).exec(function(err, users) {
-            if (err) {
-                loginSchema.salida.cogigoRespuesta = 400;
-                loginSchema.salida.respuesta = 'error consultando (find) ' + err;
-            } else {
-                loginSchema.salida.cogigoRespuesta = 0;
-                loginSchema.salida.respuesta = JSON.stringify(users);
-            }
+        let conexion = mongoose.connection;
+        conexion.on('error', function() {
+            loginSchema.salida.cogigoRespuesta = 400;
+            loginSchema.salida.respuesta = 'error consultando (find) ';
+        });
+        conexion.once('open', function() {
+            conexion.db.collection("UsuariosColaboradores", function(err, collection) {
+                collection.find({}).toArray(function(err, data) {
+                    console.log(data);
+                    loginSchema.salida.cogigoRespuesta = 0;
+                    loginSchema.salida.respuesta = data;
+                })
+            });
+
         });
     }
     res.send(loginSchema)
