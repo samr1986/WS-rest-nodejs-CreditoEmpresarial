@@ -23,7 +23,8 @@ router.get('/', function(req, res, next) {
     });
     mongoose.connection.once('open', function() {
         loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' Entro al open ';
-        mongoose.connection.db.collection("UsuariosColaboradores", function(err, collection) {
+        let conexion = mongoose.connection;
+        conexion.db.collection("UsuariosColaboradores", function(err, collection) {
             collection.find({ 'identificacion': loginSchema.entrada.usuario }).toArray(function(err, data) {
                 loginSchema.salida.codigoRespuesta = 500;
                 loginSchema.salida.respuesta = 'Logueo incorrecto';
@@ -31,7 +32,7 @@ router.get('/', function(req, res, next) {
                     if (data[0].password == loginSchema.entrada.password) {
                         loginSchema.salida.codigoRespuesta = 0;
                         loginSchema.salida.respuesta = 'Logueo existoso';
-                        mongoose.connection.close();
+                        //mongoose.connection.close();
                     }
 
                 }
