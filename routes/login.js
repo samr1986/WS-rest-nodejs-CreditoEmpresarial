@@ -38,6 +38,7 @@ router.get('/', function(req, res, next) {
                             if (data[0].password == loginSchema.entrada.password) {
                                 loginSchema.salida.codigoRespuesta = 0;
                                 loginSchema.salida.respuesta = 'Logueo existoso';
+                                mongoose.connection.close();
                             }
 
                         }
@@ -51,7 +52,6 @@ router.get('/', function(req, res, next) {
             loginSchema.salida.respuesta = 'conexion no establecida ' + err;
             res.send(loginSchema);
         });
-    mongoose.connection.close();
 });
 
 module.exports = router;
