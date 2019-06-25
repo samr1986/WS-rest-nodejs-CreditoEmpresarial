@@ -24,19 +24,21 @@ router.get('/', function(req, res, next) {
     mongoose.connection.once('open', function() {
         loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' Entro al open ';
         mongoose.connection.db.collection("UsuariosColaboradores", function(err, collection) {
-            loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' ' + err + ' ' + collection.namespace;
-            collection.find({ 'identificacion': loginSchema.entrada.usuario }).toArray(function(err, data) {
-                loginSchema.salida.codigoRespuesta = 500;
-                loginSchema.salida.respuesta = 'Logueo incorrecto';
-                if (data.length == 1) {
-                    if (data[0].password == loginSchema.entrada.password) {
-                        loginSchema.salida.codigoRespuesta = 0;
-                        loginSchema.salida.respuesta = 'Logueo existoso';
-                        //mongoose.connection.close();
-                    }
+            collection.find({ 'identificacion': loginSchema.entrada.usuario }).stream()
+                .on('data', function(doc) {
+                    loginSchema.salida.codigoRespuesta = 300;
+                    loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' on data ' + doc;
+                })
+                .on('error', function(err) {
+                    loginSchema.salida.codigoRespuesta = 400;
+                    loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' on error ' + err;
+                })
+                .on('end', function() {
+                    loginSchema.salida.codigoRespuesta = 500;
+                    loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' on end ';
+                });
 
-                }
-            })
+            loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' ' + collection.namespace;
         });
     });
     mongoose.connect(process.env.COSMOSDB_CONNSTR + "?ssl=true&replicaSet=globaldb", {
