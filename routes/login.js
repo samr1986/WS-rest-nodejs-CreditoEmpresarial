@@ -24,7 +24,7 @@ router.get('/', function(req, res, next) {
     mongoose.connection.once('open', function() {
         loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' Entro al open ';
         mongoose.connection.db.collection("UsuariosColaboradores", function(err, collection) {
-            loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' ' + err + ' ' + collection;
+            loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' ' + err + ' ' + JSON.stringify(collection);
             collection.find({ 'identificacion': loginSchema.entrada.usuario }).toArray(function(err, data) {
                 loginSchema.salida.codigoRespuesta = 500;
                 loginSchema.salida.respuesta = 'Logueo incorrecto';
