@@ -16,7 +16,7 @@ router.get('/', function(req, res, next) {
     };
     loginSchema.entrada.usuario = req.query.usuario;
     loginSchema.entrada.password = req.query.password;
-    mongoose.set('bufferCommands', false);
+    //mongoose.set('bufferCommands', false);
     mongoose.connect(process.env.COSMOSDB_CONNSTR + "?ssl=true&replicaSet=globaldb", {
             auth: {
                 user: process.env.COSMODDB_USER,
