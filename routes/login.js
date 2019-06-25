@@ -45,7 +45,7 @@ router.get('/', function(req, res, next) {
                     })
                 });
             });
-            loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' conexion exitosa' + conexion;
+            loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' conexion exitosa ' + JSON.stringify(conexion);
             res.send(loginSchema);
         })
         .catch((err) => {
