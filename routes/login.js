@@ -24,7 +24,7 @@ router.get('/', function(req, res, next) {
             }
         })
         .then(() => {
-            let conexion = mongoose.connection;
+            let conexion = mongoose.connection();
             conexion.on('error', function() {
                 loginSchema.salida.codigoRespuesta = 400;
                 loginSchema.salida.respuesta = 'error conectandose a cosmos db ';
@@ -46,7 +46,7 @@ router.get('/', function(req, res, next) {
                     })
                 });
             });
-            loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' conexion exitosa ' + JSON.stringify(conexion.on);
+            loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' conexion exitosa ';
             res.send(loginSchema);
         })
         .catch((err) => {
