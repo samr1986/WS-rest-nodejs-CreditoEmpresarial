@@ -50,7 +50,7 @@ router.get('/', function(req, res, next) {
         })
         .catch((err) => {
             loginSchema.salida.codigoRespuesta = 200;
-            loginSchema.salida.respuesta = 'conexion no establecida ' + err;
+            loginSchema.salida.respuesta = 'conexion no establecida ' + JSON.stringify(err);
             res.send(loginSchema);
         });
 });
