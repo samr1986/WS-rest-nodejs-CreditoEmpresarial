@@ -30,6 +30,7 @@ router.get('/', function(req, res, next) {
                 loginSchema.salida.respuesta = 'error conectandose a cosmos db ';
             });
             conexion.once('open', function() {
+                loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' Entro al open ';
                 conexion.db.collection("UsuariosColaboradores", function(err, collection) {
                     collection.find({ 'identificacion': loginSchema.entrada.usuario }).toArray(function(err, data) {
                         loginSchema.salida.codigoRespuesta = 500;
