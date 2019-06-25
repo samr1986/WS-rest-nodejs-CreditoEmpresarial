@@ -45,6 +45,7 @@ router.get('/', function(req, res, next) {
                     })
                 });
             });
+            loginSchema.salida.respuesta = loginSchema.salida.respuesta + JSON.stringify(conexion);
             res.send(loginSchema);
         })
         .catch((err) => {
