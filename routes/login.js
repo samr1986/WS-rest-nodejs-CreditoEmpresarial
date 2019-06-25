@@ -45,12 +45,12 @@ router.get('/', function(req, res, next) {
                     })
                 });
             });
-            loginSchema.salida.respuesta = loginSchema.salida.respuesta + JSON.stringify(conexion);
+            loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' conexion exitosa';
             res.send(loginSchema);
         })
         .catch((err) => {
             loginSchema.salida.codigoRespuesta = 200;
-            loginSchema.salida.respuesta = 'conexion no establecida ' + JSON.stringify(err);
+            loginSchema.salida.respuesta = 'conexion no establecida ' + err;
             res.send(loginSchema);
         });
 });
