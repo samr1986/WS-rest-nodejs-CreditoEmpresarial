@@ -18,16 +18,11 @@ router.get('/', function(req, res, next) {
     loginSchema.entrada.password = req.query.password;
     mongoose.set('bufferCommands', false);
     mongoose.connect(process.env.COSMOSDB_CONNSTR + "?ssl=true&replicaSet=globaldb", {
-            auth: {
-                user: process.env.COSMODDB_USER,
-                password: process.env.COSMOSDB_PASSWORD
-            }
-        })
-        .then(() => {})
-        .catch((err) => {
-            loginSchema.salida.codigoRespuesta = 200;
-            loginSchema.salida.respuesta = 'conexion no establecida ' + err;
-        });
+        auth: {
+            user: process.env.COSMODDB_USER,
+            password: process.env.COSMOSDB_PASSWORD
+        }
+    });
     let conexion = mongoose.connection;
     mongoose.connection.on('error', function() {
         loginSchema.salida.codigoRespuesta = 400;
