@@ -25,12 +25,12 @@ router.get('/', function(req, res, next) {
         })
         .then(() => {
             let conexion = mongoose.connection;
-            mongoose.connection.on('error', function() {
+            conexion.on('error', function() {
                 loginSchema.salida.codigoRespuesta = 400;
                 loginSchema.salida.respuesta = 'error conectandose a cosmos db ';
             });
-            mongoose.connection.on('open', function() {
-                mongoose.connection.db.collection("UsuariosColaboradores", function(err, collection) {
+            conexion.on('open', function() {
+                conexion.db.collection("UsuariosColaboradores", function(err, collection) {
                     collection.find({ 'identificacion': loginSchema.entrada.usuario }).toArray(function(err, data) {
                         loginSchema.salida.codigoRespuesta = 500;
                         loginSchema.salida.respuesta = 'Logueo incorrecto';
