@@ -10,8 +10,8 @@ router.get('/', function(req, res, next) {
             password: ''
         },
         salida: {
-            codigoRespuesta: 200,
-            respuesta: '',
+            codigoRespuesta: 100,
+            respuesta: 'cargue inicial',
         }
     };
     loginSchema.entrada.usuario = req.query.usuario;
