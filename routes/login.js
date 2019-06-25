@@ -43,8 +43,8 @@ router.get('/', function(req, res, next) {
                         }
                     })
                 });
-                res.send(loginSchema);
             });
+            res.send(loginSchema);
         })
         .catch((err) => {
             loginSchema.salida.codigoRespuesta = 200;
