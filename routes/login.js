@@ -34,7 +34,7 @@ router.get('/', function(req, res, next) {
                 //mongoose.connection.close();
             }
         }*/
-        let cantDocs = 0
+        let cantDocs = 500
         data.count(function(err, count) {
             cantDocs = count;
         });
