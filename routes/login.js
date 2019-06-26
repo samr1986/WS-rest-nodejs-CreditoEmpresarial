@@ -24,12 +24,8 @@ router.get('/', function(req, res, next) {
         loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' Entro al open ';
         let coleccion = mongoose.connection.db.collection("UsuariosColaboradores");
         let query = "{ 'identificacion': " + loginSchema.entrada.usuario + "}";
-        retrieveUser(coleccion, query, function(err, datos) {
-            if (err) {
-                loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' error consulta ' + err;
-            }
-            loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' se supone consulta exitosa ';
-        });
+        loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' salió del open ' + coleccion.namespace + ' query: ' + query;
+
     });
     mongoose.connect(process.env.COSMOSDB_CONNSTR + "?ssl=true&replicaSet=globaldb", {
             auth: {
@@ -47,15 +43,5 @@ router.get('/', function(req, res, next) {
             res.send(loginSchema);
         });
 });
-
-function retrieveUser(coleccion, query, callback) {
-    coleccion.find(query, function(err, datos) {
-        if (err) {
-            callback(err, null);
-        } else {
-            callback(null, datos[0]);
-        }
-    });
-};
 
 module.exports = router;
