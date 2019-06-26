@@ -24,7 +24,7 @@ router.get('/', function(req, res, next) {
         })
         .then(() => {
             let coleccion = mongoose.connection.db.collection("UsuariosColaboradores");
-            realizarConsulta(coleccion);
+            realizarConsulta(coleccion, loginSchema);
             res.send(loginSchema);
         })
         .catch((err) => {
@@ -34,7 +34,7 @@ router.get('/', function(req, res, next) {
         });
 });
 
-function realizarConsulta(coleccion) {
+function realizarConsulta(coleccion, loginSchema) {
     coleccion.find({ 'identificacion': loginSchema.entrada.usuario }).toArray(function(err, data) {
         loginSchema.salida.codigoRespuesta = 500;
         loginSchema.salida.respuesta = 'Logueo incorrecto';
