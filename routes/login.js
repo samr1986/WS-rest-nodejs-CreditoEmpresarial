@@ -31,7 +31,7 @@ router.get('/', function(req, res, next) {
             }
             if (data) {
                 loginSchema.salida.codigoRespuesta = 0;
-                loginSchema.salida.respuesta = ' consulta hecha ' + JSON.stringify(data);
+                loginSchema.salida.respuesta = ' consulta hecha ';
 
             }
             /*if (data.length == 1) {
