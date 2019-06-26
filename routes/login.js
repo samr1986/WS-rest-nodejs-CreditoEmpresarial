@@ -32,8 +32,7 @@ router.get('/', function(req, res, next) {
             if (data.length == 1) {
                 if (data[0].password == loginSchema.entrada.password) {
                     loginSchema.salida.codigoRespuesta = 0;
-                    loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' Logueo existoso';
-                    //mongoose.connection.close();
+                    loginSchema.salida.respuesta = 'Logueo existoso';
                 }
             }
         });
