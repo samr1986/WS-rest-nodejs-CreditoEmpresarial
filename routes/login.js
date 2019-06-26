@@ -32,7 +32,7 @@ router.get('/', function(req, res, next) {
                 loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' consulta con error';
             }
             loginSchema.salida.codigoRespuesta = 0;
-            loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' consulta hecha ' + data;
+            loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' consulta hecha ' + JSON.stringify(data);
             /*if (data.length == 1) {
                 if (data[0].password == loginSchema.entrada.password) {
                     loginSchema.salida.codigoRespuesta = 0;
