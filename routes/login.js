@@ -23,8 +23,8 @@ router.get('/', function(req, res, next) {
     mongoose.connection.once('open', function() {
         loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' Entro al open ';
         let coleccion = mongoose.connection.db.collection("UsuariosColaboradores");
-        loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' ' + coleccion.namespace;
-        coleccion.find({ 'identificacion': loginSchema.entrada.usuario });
+        let datos = coleccion.find({ 'identificacion': loginSchema.entrada.usuario });
+        loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' ' + coleccion.namespace + ' ' + datos;
         /* .then(() => {
              loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' se supone consulta exitosa ';
          })
