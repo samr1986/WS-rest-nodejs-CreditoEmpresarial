@@ -3,18 +3,17 @@ var router = express.Router();
 var mongoose = require('mongoose');
 var env = require('dotenv').config();
 
-let loginSchema = {
-    entrada: {
-        usuario: '',
-        password: ''
-    },
-    salida: {
-        codigoRespuesta: 100,
-        respuesta: 'cargue inicial',
-    }
-};
-
 router.get('/', function(req, res, next) {
+    let loginSchema = {
+        entrada: {
+            usuario: '',
+            password: ''
+        },
+        salida: {
+            codigoRespuesta: 100,
+            respuesta: 'cargue inicial',
+        }
+    };
     loginSchema.entrada.usuario = req.query.usuario;
     loginSchema.entrada.password = req.query.password;
     mongoose.connection.on('error', function() {
@@ -33,7 +32,7 @@ router.get('/', function(req, res, next) {
             }
             if (data) {
                 loginSchema.salida.codigoRespuesta = 0;
-                loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' consulta hecha ' + data;
+                loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' consulta hecha ' + data.length;
 
             }
             /*if (data.length == 1) {
