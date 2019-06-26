@@ -16,14 +16,6 @@ let loginSchema = {
 router.get('/', function(req, res, next) {
     loginSchema.entrada.usuario = req.query.usuario;
     loginSchema.entrada.password = req.query.password;
-    mongoose.connection.on('error', function() {
-        loginSchema.salida.codigoRespuesta = 400;
-        loginSchema.salida.respuesta = 'error conectandose a cosmos db ';
-    });
-    mongoose.connection.once('open', function() {
-        let coleccion = mongoose.connection.db.collection("UsuariosColaboradores");
-        await realizarConsulta(coleccion);
-    });
     mongoose.connect(process.env.COSMOSDB_CONNSTR + "?ssl=true&replicaSet=globaldb", {
             auth: {
                 user: process.env.COSMODDB_USER,
@@ -31,6 +23,8 @@ router.get('/', function(req, res, next) {
             }
         })
         .then(() => {
+            let coleccion = mongoose.connection.db.collection("UsuariosColaboradores");
+            realizarConsulta(coleccion);
             res.send(loginSchema);
         })
         .catch((err) => {
