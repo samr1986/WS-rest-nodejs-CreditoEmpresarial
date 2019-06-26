@@ -29,7 +29,7 @@ router.get('/', function(req, res, next) {
                 loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' no se pudo realizar la consulta a mongodb ' + err;
             } else {
                 loginSchema.salida.codigoRespuesta = 500;
-                loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' logueo no exitoso intentelo nuevamente ' + results.length;
+                loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' logueo no exitoso intentelo nuevamente ' + JSON.stringify(JSON.parse(results));
             }
         });
     });
