@@ -16,22 +16,6 @@ router.get('/', function(req, res, next) {
     };
     loginSchema.entrada.usuario = req.query.usuario;
     loginSchema.entrada.password = req.query.password;
-    //mongoose.set('bufferCommands', false);
-    mongoose.connect(process.env.COSMOSDB_CONNSTR + "?ssl=true&replicaSet=globaldb", {
-            auth: {
-                user: process.env.COSMODDB_USER,
-                password: process.env.COSMOSDB_PASSWORD
-            }
-        })
-        .then(() => {
-            loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' conexion exitosa ';
-            res.send(loginSchema);
-        })
-        .catch((err) => {
-            loginSchema.salida.codigoRespuesta = 200;
-            loginSchema.salida.respuesta = 'conexion no establecida ' + err;
-            res.send(loginSchema);
-        });
     mongoose.connection.on('error', function() {
         loginSchema.salida.codigoRespuesta = 400;
         loginSchema.salida.respuesta = 'error conectandose a cosmos db ';
@@ -61,6 +45,21 @@ router.get('/', function(req, res, next) {
         });
         loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' ' + coleccion.namespace;
     });
+    mongoose.connect(process.env.COSMOSDB_CONNSTR + "?ssl=true&replicaSet=globaldb", {
+            auth: {
+                user: process.env.COSMODDB_USER,
+                password: process.env.COSMOSDB_PASSWORD
+            }
+        })
+        .then(() => {
+            loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' conexion exitosa ';
+            res.send(loginSchema);
+        })
+        .catch((err) => {
+            loginSchema.salida.codigoRespuesta = 200;
+            loginSchema.salida.respuesta = 'conexion no establecida ' + err;
+            res.send(loginSchema);
+        });
 });
 
 module.exports = router;
