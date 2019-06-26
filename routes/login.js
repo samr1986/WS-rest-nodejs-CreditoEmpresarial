@@ -2,18 +2,19 @@ var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
 var env = require('dotenv').config();
+let loginSchema = {
+    entrada: {
+        usuario: '',
+        password: ''
+    },
+    salida: {
+        codigoRespuesta: 100,
+        respuesta: 'cargue inicial',
+    }
+};
 
 router.get('/', function(req, res, next) {
-    let loginSchema = {
-        entrada: {
-            usuario: '',
-            password: ''
-        },
-        salida: {
-            codigoRespuesta: 100,
-            respuesta: 'cargue inicial',
-        }
-    };
+
     loginSchema.entrada.usuario = req.query.usuario;
     loginSchema.entrada.password = req.query.password;
     mongoose.connect(process.env.COSMOSDB_CONNSTR + "?ssl=true&replicaSet=globaldb", {
@@ -24,7 +25,20 @@ router.get('/', function(req, res, next) {
         })
         .then(() => {
             let coleccion = mongoose.connection.db.collection("UsuariosColaboradores");
-            realizarConsulta(coleccion, loginSchema);
+            coleccion.find({ 'identificacion': req.query.usuario }).toArray(function(err, data) {
+                loginSchema.salida.codigoRespuesta = 500;
+                loginSchema.salida.respuesta = 'Logueo incorrecto';
+                if (err) {
+                    loginSchema.salida.codigoRespuesta = 600;
+                    loginSchema.salida.respuesta = 'consulta con error';
+                }
+                if (data.length == 1) {
+                    if (data[0].password == req.query.password) {
+                        loginSchema.salida.codigoRespuesta = 0;
+                        loginSchema.salida.respuesta = 'Logueo existoso';
+                    }
+                }
+            });
             res.send(loginSchema);
         })
         .catch((err) => {
@@ -34,21 +48,5 @@ router.get('/', function(req, res, next) {
         });
 });
 
-function realizarConsulta(coleccion, loginSchema) {
-    coleccion.find({ 'identificacion': loginSchema.entrada.usuario }).toArray(function(err, data) {
-        loginSchema.salida.codigoRespuesta = 500;
-        loginSchema.salida.respuesta = 'Logueo incorrecto';
-        if (err) {
-            loginSchema.salida.codigoRespuesta = 600;
-            loginSchema.salida.respuesta = 'consulta con error';
-        }
-        if (data.length == 1) {
-            if (data[0].password == loginSchema.entrada.password) {
-                loginSchema.salida.codigoRespuesta = 0;
-                loginSchema.salida.respuesta = 'Logueo existoso';
-            }
-        }
-    });
-}
 
 module.exports = router;
