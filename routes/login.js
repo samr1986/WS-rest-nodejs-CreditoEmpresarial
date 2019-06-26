@@ -33,7 +33,12 @@ router.get('/', function(req, res, next) {
             }
             if (data) {
                 loginSchema.salida.codigoRespuesta = 0;
-                loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' consulta hecha ' + data;
+                loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' consulta hecha ';
+                for (var p in data) {
+                    if (data.hasOwnProperty(p)) {
+                        loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' ' + p + '::' + data[p] + '\n';
+                    }
+                }
             }
             /*if (data.length == 1) {
                 if (data[0].password == loginSchema.entrada.password) {
