@@ -38,8 +38,7 @@ router.get('/', function(req, res, next) {
         data.count(function(err, count) {
             cantDocs = count;
         });
-        loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' ' + coleccion.namespace + ' '
-        cantDocs;
+        loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' ' + coleccion.namespace + ' ' + cantDocs;
     });
     mongoose.connect(process.env.COSMOSDB_CONNSTR + "?ssl=true&replicaSet=globaldb", {
             auth: {
