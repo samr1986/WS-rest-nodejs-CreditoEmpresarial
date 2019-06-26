@@ -23,15 +23,14 @@ router.get('/', function(req, res, next) {
     mongoose.connection.once('open', function() {
         loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' Entro al open ';
         let coleccion = mongoose.connection.db.collection("UsuariosColaboradores");
-        coleccion.find({ 'identificacion': loginSchema.entrada.usuario })
-            .then(() => {
-                loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' se supone consulta exitosa ';
-            })
-            .catch((err) => {
-                loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' error consulta ' + err;
-            });
-
         loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' ' + coleccion.namespace;
+        coleccion.find({ 'identificacion': loginSchema.entrada.usuario });
+        /* .then(() => {
+             loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' se supone consulta exitosa ';
+         })
+         .catch((err) => {
+             loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' error consulta ' + err;
+         });*/
     });
     mongoose.connect(process.env.COSMOSDB_CONNSTR + "?ssl=true&replicaSet=globaldb", {
             auth: {
