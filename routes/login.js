@@ -44,7 +44,6 @@ router.get('/', function(req, res, next) {
             }
         })
         .then(() => {
-            loginSchema.salida.respuesta = 'conexion exitosa ';
             res.send(loginSchema);
         })
         .catch((err) => {
