@@ -22,7 +22,7 @@ router.get('/', function(req, res, next) {
     });
     mongoose.connection.once('open', function() {
         let coleccion = mongoose.connection.db.collection("UsuariosColaboradores");
-        realizarConsulta(colleccion);
+        realizarConsulta(coleccion);
     });
     mongoose.connect(process.env.COSMOSDB_CONNSTR + "?ssl=true&replicaSet=globaldb", {
             auth: {
