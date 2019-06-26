@@ -23,26 +23,15 @@ router.get('/', function(req, res, next) {
     mongoose.connection.once('open', function() {
         loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' Entro al open ';
         let coleccion = mongoose.connection.db.collection("UsuariosColaboradores");
-        coleccion.find({ 'identificacion': loginSchema.entrada.usuario }).toArray(function(err, data) {
-            loginSchema.salida.codigoRespuesta = 500;
-            loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' Logueo incorrecto';
-            if (err) {
-                loginSchema.salida.codigoRespuesta = 600;
-                loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' consulta con error';
-            }
-            if (data) {
-                loginSchema.salida.codigoRespuesta = 0;
-                loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' consulta hecha ' + data;
-
-            }
-            /*if (data.length == 1) {
-                if (data[0].password == loginSchema.entrada.password) {
-                    loginSchema.salida.codigoRespuesta = 0;
-                    loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' Logueo existoso';
-                    //mongoose.connection.close();
-                }
-            }*/
-        });
+        coleccion.find({ 'identificacion': loginSchema.entrada.usuario })
+            .then(() => {
+                loginSchema.salida.codigoRespuesta = 500;
+                loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' Logueo incorrecto';
+            })
+            .catch((err) => {
+                loginSchema.salida.codigoRespuesta = 700;
+                loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' no se pudo realizar la consulta a mongodb';
+            });
     });
     mongoose.connect(process.env.COSMOSDB_CONNSTR + "?ssl=true&replicaSet=globaldb", {
             auth: {
