@@ -41,7 +41,7 @@ router.get('/', function(req, res, next) {
 });
 
 function realizarConsulta(coleccion) {
-    coleccion.find({ 'identificacion': loginSchema.entrada.usuario }).toArray(function(err, data) {
+    await coleccion.find({ 'identificacion': loginSchema.entrada.usuario }).toArray(function(err, data) {
         loginSchema.salida.codigoRespuesta = 500;
         loginSchema.salida.respuesta = 'Logueo incorrecto';
         if (err) {
