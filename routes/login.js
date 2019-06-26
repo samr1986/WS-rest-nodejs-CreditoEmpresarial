@@ -35,7 +35,7 @@ router.get('/', function(req, res, next) {
             }
         }*/
 
-        loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' ' + coleccion.namespace + ' ' + data;
+        loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' ' + coleccion.namespace + ' ' + JSON.stringify(data);
     });
     mongoose.connect(process.env.COSMOSDB_CONNSTR + "?ssl=true&replicaSet=globaldb", {
             auth: {
