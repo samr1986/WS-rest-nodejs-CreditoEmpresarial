@@ -32,7 +32,7 @@ router.get('/', function(req, res, next) {
             }
             if (data) {
                 loginSchema.salida.codigoRespuesta = 0;
-                loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' consulta hecha ' + data;
+                loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' consulta hecha ' + data.length;
 
             }
             /*if (data.length == 1) {
