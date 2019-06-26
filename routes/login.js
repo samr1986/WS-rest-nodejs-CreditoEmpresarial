@@ -27,17 +27,18 @@ router.get('/', function(req, res, next) {
         coleccion.find({ 'identificacion': loginSchema.entrada.usuario }, function(err, data) {
             loginSchema.salida.codigoRespuesta = 500;
             loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' Logueo incorrecto';
-            /*if (err) {
+            if (err) {
                 loginSchema.salida.codigoRespuesta = 500;
                 loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' consulta con error';
             }
-            if (data.length == 1) {
-                if (data[0].password == loginSchema.entrada.password) {
-                    loginSchema.salida.codigoRespuesta = 0;
-                    loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' Logueo existoso';
-                    //mongoose.connection.close();
-                }
-            }*/
+            /*
+                        if (data.length == 1) {
+                            if (data[0].password == loginSchema.entrada.password) {
+                                loginSchema.salida.codigoRespuesta = 0;
+                                loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' Logueo existoso';
+                                //mongoose.connection.close();
+                            }
+                        }*/
         });
         loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' ' + coleccion.namespace;
     });
