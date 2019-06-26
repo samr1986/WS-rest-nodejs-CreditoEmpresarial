@@ -28,8 +28,8 @@ router.get('/', function(req, res, next) {
                 loginSchema.salida.codigoRespuesta = 700;
                 loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' no se pudo realizar la consulta a mongodb ' + err;
             } else {
-                loginSchema.salida.codigoRespuesta = 700;
-                loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' no se pudo realizar la consulta a mongodb ' + results;
+                loginSchema.salida.codigoRespuesta = 500;
+                loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' se va a comprobar pass ' + results;
             }
         });
     });
