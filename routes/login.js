@@ -26,8 +26,8 @@ router.get('/', function(req, res, next) {
         mongoose.connection.db.collection("UsuariosColaboradores").find({ 'identificacion': loginSchema.entrada.usuario }).toArray(function(err, data) {
             loginSchema.salida.codigoRespuesta = 500;
             loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' Logueo incorrecto';
-            if (datos.length == 1) {
-                if (datos[0].password == loginSchema.entrada.password) {
+            if (data.length == 1) {
+                if (data[0].password == loginSchema.entrada.password) {
                     loginSchema.salida.codigoRespuesta = 0;
                     loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' Logueo existoso';
                     //mongoose.connection.close();
