@@ -23,17 +23,13 @@ router.get('/', function(req, res, next) {
     mongoose.connection.once('open', function() {
         loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' Entro al open ';
         let coleccion = mongoose.connection.db.collection("UsuariosColaboradores");
-        let datos = coleccion.find({ 'identificacion': loginSchema.entrada.usuario });
-        datos.then(() => {
+        let query = "{ 'identificacion': " + loginSchema.entrada.usuario + "}";
+        retrieveUser(coleccion, query, function(err, datos) {
+            if (err) {
+                loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' error consulta ' + err;
+            }
             loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' se supone consulta exitosa ';
         });
-        loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' ' + coleccion.namespace;
-        /* .then(() => {
-             loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' se supone consulta exitosa ';
-         })
-         .catch((err) => {
-             loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' error consulta ' + err;
-         });*/
     });
     mongoose.connect(process.env.COSMOSDB_CONNSTR + "?ssl=true&replicaSet=globaldb", {
             auth: {
@@ -51,5 +47,15 @@ router.get('/', function(req, res, next) {
             res.send(loginSchema);
         });
 });
+
+function retrieveUser(coleccion, query, callback) {
+    coleccion.find(query, function(err, datos) {
+        if (err) {
+            callback(err, null);
+        } else {
+            callback(null, datos[0]);
+        }
+    });
+};
 
 module.exports = router;
