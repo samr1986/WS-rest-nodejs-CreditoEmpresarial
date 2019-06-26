@@ -25,9 +25,11 @@ router.get('/', function(req, res, next) {
         let coleccion = mongoose.connection.db.collection("UsuariosColaboradores");
         coleccion.find({ 'identificacion': loginSchema.entrada.usuario }, function(err, results) {
             if (err) {
-                panic(err);
+                loginSchema.salida.codigoRespuesta = 700;
+                loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' no se pudo realizar la consulta a mongodb ' + err;
             } else {
-                doSomething(results);
+                loginSchema.salida.codigoRespuesta = 700;
+                loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' no se pudo realizar la consulta a mongodb ' + results;
             }
         });
     });
@@ -48,13 +50,4 @@ router.get('/', function(req, res, next) {
         });
 });
 
-function panic(error) {
-    loginSchema.salida.codigoRespuesta = 700;
-    loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' no se pudo realizar la consulta a mongodb ' + error;
-}
-
-function doSomething(resultados) {
-    loginSchema.salida.codigoRespuesta = 500;
-    loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' Logueo incorrecto ' + resultados;
-}
 module.exports = router;
