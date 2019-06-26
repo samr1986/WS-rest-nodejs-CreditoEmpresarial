@@ -22,7 +22,7 @@ router.get('/', function(req, res, next) {
     });
     mongoose.connection.once('open', function() {
         let coleccion = mongoose.connection.db.collection("UsuariosColaboradores");
-        realizarConsulta(coleccion);
+        await realizarConsulta(coleccion);
     });
     mongoose.connect(process.env.COSMOSDB_CONNSTR + "?ssl=true&replicaSet=globaldb", {
             auth: {
@@ -41,7 +41,7 @@ router.get('/', function(req, res, next) {
 });
 
 function realizarConsulta(coleccion) {
-    await coleccion.find({ 'identificacion': loginSchema.entrada.usuario }).toArray(function(err, data) {
+    coleccion.find({ 'identificacion': loginSchema.entrada.usuario }).toArray(function(err, data) {
         loginSchema.salida.codigoRespuesta = 500;
         loginSchema.salida.respuesta = 'Logueo incorrecto';
         if (err) {
