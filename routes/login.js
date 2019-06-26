@@ -23,7 +23,7 @@ router.get('/', function(req, res, next) {
     mongoose.connection.once('open', function() {
         loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' Entro al open ';
         let coleccion = mongoose.connection.db.collection("UsuariosColaboradores");
-        coleccion.find({ 'identificacion': loginSchema.entrada.usuario }, toArray((err, results) => {
+        coleccion.find({ 'identificacion': loginSchema.entrada.usuario }, (err, results) => {
             if (err) {
                 loginSchema.salida.codigoRespuesta = 700;
                 loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' no se pudo realizar la consulta a mongodb ' + err;
@@ -31,7 +31,7 @@ router.get('/', function(req, res, next) {
                 loginSchema.salida.codigoRespuesta = 500;
                 loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' logueo no exitoso intentelo nuevamente ' + results.length;
             }
-        }));
+        });
     });
     mongoose.connect(process.env.COSMOSDB_CONNSTR + "?ssl=true&replicaSet=globaldb", {
             auth: {
