@@ -42,11 +42,9 @@ function realizarConsulta(coleccion) {
             loginSchema.salida.codigoRespuesta = 600;
             loginSchema.salida.respuesta = 'consulta con error';
         }
-        if (data.length == 1) {
-            if (data[0].password == loginSchema.entrada.password) {
-                loginSchema.salida.codigoRespuesta = 0;
-                loginSchema.salida.respuesta = 'Logueo existoso';
-            }
+        if (data[0].password == loginSchema.entrada.password) {
+            loginSchema.salida.codigoRespuesta = 0;
+            loginSchema.salida.respuesta = 'Logueo existoso';
         }
     });
     /*coleccion.find({ 'identificacion': loginSchema.entrada.usuario }).toArray(function(err, data) {
