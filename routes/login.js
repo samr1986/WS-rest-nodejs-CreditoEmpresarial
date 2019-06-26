@@ -24,7 +24,7 @@ router.get('/', function(req, res, next) {
     mongoose.connection.once('open', function() {
         loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' Entro al open ';
         let coleccion = mongoose.connection.db.collection("UsuariosColaboradores");
-        coleccion.find({ 'identificacion': loginSchema.entrada.usuario }).toArray(function(err, data) {
+        const query1 = coleccion.find({ 'identificacion': loginSchema.entrada.usuario }).toArray(function(err, data) {
             loginSchema.salida.codigoRespuesta = 500;
             loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' Logueo incorrecto';
             if (err) {
@@ -44,6 +44,7 @@ router.get('/', function(req, res, next) {
                 }
             }*/
         });
+        const result1 = await query1.exec();
         loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' ' + coleccion.namespace;
     });
     mongoose.connect(process.env.COSMOSDB_CONNSTR + "?ssl=true&replicaSet=globaldb", {
