@@ -23,13 +23,13 @@ router.get('/', function(req, res, next) {
     mongoose.connection.once('open', function() {
         loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' Entro al open ';
         let coleccion = mongoose.connection.db.collection("UsuariosColaboradores");
-        coleccion.find({ 'identificacion': loginSchema.entrada.usuario }, function(err, results) {
+        coleccion.find({ 'identificacion': loginSchema.entrada.usuario }, (err, results) => {
             if (err) {
                 loginSchema.salida.codigoRespuesta = 700;
                 loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' no se pudo realizar la consulta a mongodb ' + err;
             } else {
                 loginSchema.salida.codigoRespuesta = 500;
-                loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' se va a comprobar pass ' + results;
+                loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' logueo no exitoso intentelo nuevamente ';
             }
         });
     });
