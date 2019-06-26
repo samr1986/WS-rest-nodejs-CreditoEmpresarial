@@ -3,17 +3,18 @@ var router = express.Router();
 var mongoose = require('mongoose');
 var env = require('dotenv').config();
 
+let loginSchema = {
+    entrada: {
+        usuario: '',
+        password: ''
+    },
+    salida: {
+        codigoRespuesta: 100,
+        respuesta: 'cargue inicial',
+    }
+};
+
 router.get('/', function(req, res, next) {
-    let loginSchema = {
-        entrada: {
-            usuario: '',
-            password: ''
-        },
-        salida: {
-            codigoRespuesta: 100,
-            respuesta: 'cargue inicial',
-        }
-    };
     loginSchema.entrada.usuario = req.query.usuario;
     loginSchema.entrada.password = req.query.password;
     mongoose.connection.on('error', function() {
@@ -23,14 +24,25 @@ router.get('/', function(req, res, next) {
     mongoose.connection.once('open', function() {
         loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' Entro al open ';
         let coleccion = mongoose.connection.db.collection("UsuariosColaboradores");
-        coleccion.find({ 'identificacion': loginSchema.entrada.usuario }, (err, results) => {
+        coleccion.find({ 'identificacion': loginSchema.entrada.usuario }).toArray(function(err, data) {
+            loginSchema.salida.codigoRespuesta = 500;
+            loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' Logueo incorrecto';
             if (err) {
-                loginSchema.salida.codigoRespuesta = 700;
-                loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' no se pudo realizar la consulta a mongodb ' + err;
-            } else {
-                loginSchema.salida.codigoRespuesta = 500;
-                loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' logueo no exitoso intentelo nuevamente ' + JSON.stringify(JSON.parse(results));
+                loginSchema.salida.codigoRespuesta = 600;
+                loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' consulta con error';
             }
+            if (data) {
+                loginSchema.salida.codigoRespuesta = 0;
+                loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' consulta hecha ' + data;
+
+            }
+            /*if (data.length == 1) {
+                if (data[0].password == loginSchema.entrada.password) {
+                    loginSchema.salida.codigoRespuesta = 0;
+                    loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' Logueo existoso';
+                    //mongoose.connection.close();
+                }
+            }*/
         });
     });
     mongoose.connect(process.env.COSMOSDB_CONNSTR + "?ssl=true&replicaSet=globaldb", {
