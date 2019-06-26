@@ -21,18 +21,17 @@ router.get('/', function(req, res, next) {
         loginSchema.salida.respuesta = 'error conectandose a cosmos db ';
     });
     mongoose.connection.once('open', function() {
-        loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' Entro al open ';
         let coleccion = mongoose.connection.db.collection("UsuariosColaboradores");
         coleccion.find({ 'identificacion': loginSchema.entrada.usuario }).toArray(function(err, data) {
             loginSchema.salida.codigoRespuesta = 500;
-            loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' Logueo incorrecto';
+            loginSchema.salida.respuesta = 'Logueo incorrecto';
             if (err) {
                 loginSchema.salida.codigoRespuesta = 600;
-                loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' consulta con error';
+                loginSchema.salida.respuesta = 'consulta con error';
             }
             if (data) {
                 loginSchema.salida.codigoRespuesta = 0;
-                loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' consulta hecha ' + data.length;
+                loginSchema.salida.respuesta = ' consulta hecha ' + JSON.stringify(data);
 
             }
             /*if (data.length == 1) {
@@ -51,7 +50,7 @@ router.get('/', function(req, res, next) {
             }
         })
         .then(() => {
-            loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' conexion exitosa ';
+            loginSchema.salida.respuesta = 'conexion exitosa ';
             res.send(loginSchema);
         })
         .catch((err) => {
