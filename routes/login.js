@@ -36,16 +36,12 @@ router.get('/', function(req, res, next) {
 
 function realizarConsulta(coleccion) {
     coleccion.find({ 'identificacion': loginSchema.entrada.usuario }, function(err, data) {
-        loginSchema.salida.codigoRespuesta = 500;
-        loginSchema.salida.respuesta = 'Logueo incorrecto';
         if (err) {
             loginSchema.salida.codigoRespuesta = 600;
             loginSchema.salida.respuesta = 'consulta con error';
         }
-        if (data[0].password == loginSchema.entrada.password) {
-            loginSchema.salida.codigoRespuesta = 0;
-            loginSchema.salida.respuesta = 'Logueo existoso';
-        }
+        loginSchema.salida.codigoRespuesta = 500;
+        loginSchema.salida.respuesta = 'logueo incorrecto ' + data;
     });
     /*coleccion.find({ 'identificacion': loginSchema.entrada.usuario }).toArray(function(err, data) {
         loginSchema.salida.codigoRespuesta = 500;
