@@ -2,18 +2,18 @@ var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
 var env = require('dotenv').config();
-let loginSchema = {
-    entrada: {
-        usuario: '',
-        password: ''
-    },
-    salida: {
-        codigoRespuesta: 100,
-        respuesta: 'cargue inicial',
-    }
-};
 
 router.get('/', function(req, res, next) {
+    let loginSchema = {
+        entrada: {
+            usuario: '',
+            password: ''
+        },
+        salida: {
+            codigoRespuesta: 100,
+            respuesta: 'cargue inicial',
+        }
+    };
     loginSchema.entrada.usuario = req.query.usuario;
     loginSchema.entrada.password = req.query.password;
     mongoose.connect(process.env.COSMOSDB_CONNSTR + "?ssl=true&replicaSet=globaldb", {
