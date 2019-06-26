@@ -24,7 +24,7 @@ router.get('/', function(req, res, next) {
     mongoose.connection.once('open', function() {
         loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' Entro al open ';
         let coleccion = mongoose.connection.db.collection("UsuariosColaboradores");
-        coleccion.find({ 'identificacion': loginSchema.entrada.usuario }, function(err, data) {
+        coleccion.find({ 'identificacion': loginSchema.entrada.usuario }).toArray(function(err, data) {
             loginSchema.salida.codigoRespuesta = 500;
             loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' Logueo incorrecto';
             if (err) {
@@ -33,12 +33,8 @@ router.get('/', function(req, res, next) {
             }
             if (data) {
                 loginSchema.salida.codigoRespuesta = 0;
-                loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' consulta hecha ';
-                for (var p in data) {
-                    if (data.hasOwnProperty(p)) {
-                        loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' ' + p + '::' + data[p] + '\n';
-                    }
-                }
+                loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' consulta hecha ' + data;
+
             }
             /*if (data.length == 1) {
                 if (data[0].password == loginSchema.entrada.password) {
