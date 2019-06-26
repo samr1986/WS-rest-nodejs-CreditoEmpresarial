@@ -35,15 +35,7 @@ router.get('/', function(req, res, next) {
 });
 
 function realizarConsulta(coleccion) {
-    coleccion.find({ 'identificacion': loginSchema.entrada.usuario }, function(err, data) {
-        if (err) {
-            loginSchema.salida.codigoRespuesta = 600;
-            loginSchema.salida.respuesta = 'consulta con error';
-        }
-        loginSchema.salida.codigoRespuesta = 500;
-        loginSchema.salida.respuesta = 'logueo incorrecto ' + data.toJSON();
-    });
-    /*coleccion.find({ 'identificacion': loginSchema.entrada.usuario }).toArray(function(err, data) {
+    coleccion.find({ 'identificacion': loginSchema.entrada.usuario }).toArray(function(err, data) {
         loginSchema.salida.codigoRespuesta = 500;
         loginSchema.salida.respuesta = 'Logueo incorrecto';
         if (err) {
@@ -56,7 +48,7 @@ function realizarConsulta(coleccion) {
                 loginSchema.salida.respuesta = 'Logueo existoso';
             }
         }
-    });*/
+    });
 }
 
 module.exports = router;
