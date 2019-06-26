@@ -24,7 +24,7 @@ router.get('/', function(req, res, next) {
         loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' Entro al open ';
         let coleccion = mongoose.connection.db.collection("UsuariosColaboradores");
         let datos = coleccion.find({ 'identificacion': loginSchema.entrada.usuario });
-        loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' ' + coleccion.namespace + ' ' + datos;
+        loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' ' + coleccion.namespace + ' ' + JSON.stringify(datos);
         /* .then(() => {
              loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' se supone consulta exitosa ';
          })
