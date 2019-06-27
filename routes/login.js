@@ -36,10 +36,21 @@ router.get('/', function(req, res, next) {
                 UsuarioColaborador = mongoose.model('UsuariosColaboradores', UsuColaboSchema)
             };
             UsuarioColaborador
-                .find({
-                    identificacion: req.query.usuario
+                .find().exec(function(err, data) {
+                    loginSchema.salida.codigoRespuesta = 500;
+                    loginSchema.salida.respuesta = 'Logueo incorrecto DATOS: ' + data.length;
+                    if (err) {
+                        loginSchema.salida.codigoRespuesta = 600;
+                        loginSchema.salida.respuesta = 'consulta con error';
+                    }
+                    if (data.length == 1) {
+                        if (data[0].password == loginSchema.entrada.password) {
+                            loginSchema.salida.codigoRespuesta = 0;
+                            loginSchema.salida.respuesta = 'Logueo existoso';
+                        }
+                    }
                 })
-                .then(doc => {
+                /*.then(doc => {
                     loginSchema.salida.codigoRespuesta = 500;
                     loginSchema.salida.respuesta = 'Logueo incorrecto DATOS: ' +
                         JSON.stringify(doc, function(key, value) {
@@ -57,18 +68,8 @@ router.get('/', function(req, res, next) {
                 .catch(err => {
                     loginSchema.salida.codigoRespuesta = 600;
                     loginSchema.salida.respuesta = 'consulta con error ' + err;
-                });
-            res.send(' db: ' + JSON.stringify(mongoose.connection.db, function(key, value) {
-                if (typeof value === 'object' && value !== null) {
-                    if (cache.indexOf(value) !== -1) {
-                        // Duplicate reference found, discard key
-                        return;
-                    }
-                    // Store value in our collection
-                    cache.push(value);
-                }
-                return value;
-            }) + ' collection: ' + mongoose.connection.db.collections);
+                });*/
+            res.send(loginSchema);
         })
         .catch(err => {
             loginSchema.salida.codigoRespuesta = 200;
