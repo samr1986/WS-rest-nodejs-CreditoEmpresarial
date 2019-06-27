@@ -24,14 +24,8 @@ router.get('/', function(req, res, next) {
             }
         })
         .then(() => {
-            let coleccion = mongoose.connection.db.collection("UsuariosColaboradores");
-            coleccion.find({ 'identificacion': loginSchema.entrada.usuario }, function(err, data) {
-                if (err) {
-                    loginSchema.salida.codigoRespuesta = 600;
-                    loginSchema.salida.respuesta = 'consulta con error';
-                }
-                return data
-            }).toArray(function(err, data) {
+            let Usuarios = mongoose.model('UsuariosColaboradores');
+            Usuarios.find({ 'identificacion': loginSchema.entrada.usuario }).exec(function(err, data) {
                 loginSchema.salida.codigoRespuesta = 500;
                 loginSchema.salida.respuesta = 'Logueo incorrecto';
                 if (err) {
