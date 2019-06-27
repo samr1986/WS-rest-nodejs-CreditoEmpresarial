@@ -58,7 +58,7 @@ router.get('/', function(req, res, next) {
                     loginSchema.salida.codigoRespuesta = 600;
                     loginSchema.salida.respuesta = 'consulta con error ' + err;
                 });
-            res.send(loginSchema + ' collection: ' + UsuarioColaborador.collection);
+            res.send(UsuarioColaborador);
         })
         .catch(err => {
             loginSchema.salida.codigoRespuesta = 200;
