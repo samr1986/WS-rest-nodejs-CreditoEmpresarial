@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+let mongoose = require('mongoose');
 var env = require('dotenv').config();
 let loginSchema = {
     entrada: {
