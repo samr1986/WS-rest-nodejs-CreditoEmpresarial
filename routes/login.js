@@ -31,7 +31,7 @@ router.get('/', function(req, res, next) {
             });
             let UsuarioColaborador
             try {
-                UsuarioColaborador = mongoose.model('users')
+                UsuarioColaborador = mongoose.model('UsuariosColaboradores')
             } catch (error) {
                 UsuarioColaborador = mongoose.model('UsuariosColaboradores', UsuColaboSchema)
             };
