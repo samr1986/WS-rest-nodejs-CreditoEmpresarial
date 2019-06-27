@@ -1,7 +1,8 @@
 var express = require('express');
 var router = express.Router();
-var mongoose = require('mongoose');
 var env = require('dotenv').config();
+var mongoose = require('mongoose');
+let Schema = mongoose.Schema;
 let loginSchema = {
     entrada: {
         usuario: '',
@@ -12,6 +13,24 @@ let loginSchema = {
         respuesta: 'cargue inicial',
     }
 };
+
+var UsuColaboSchema = new Schema({
+    _id: {
+        type: Schema.ObjectId,
+        ref: 'id'
+    },
+    identificacion: {
+        type: String,
+        default: '',
+        trim: true
+    },
+    password: {
+        type: String,
+        default: '',
+        trim: true
+    }
+});
+
 
 router.get('/', function(req, res, next) {
 
@@ -24,6 +43,7 @@ router.get('/', function(req, res, next) {
             }
         })
         .then(() => {
+            mongoose.model('UsuariosColaboradores', UsuColaboSchema);
             let Usuarios = mongoose.model('UsuariosColaboradores');
             Usuarios.find({ 'identificacion': loginSchema.entrada.usuario }).exec(function(err, data) {
                 loginSchema.salida.codigoRespuesta = 500;
