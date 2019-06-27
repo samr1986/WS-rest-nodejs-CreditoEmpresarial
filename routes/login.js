@@ -30,7 +30,7 @@ router.get('/', function(req, res, next) {
             res.send(loginSchema);
         });*/
     loginSchema.salida.codigoRespuesta = 500;
-    loginSchema.salida.respuesta = 'que tiene usuariocola: ' + UsuarioColaborador.db;
+    loginSchema.salida.respuesta = 'que tiene usuariocola: ' + JSON.stringify(UsuarioColaborador.db);
     res.send(loginSchema);
 });
 
