@@ -20,10 +20,16 @@ router.get('/', function(req, res, next) {
             }
         })
         .then(() => {
-            var UsuarioColaborador = require('../models/UsuariosColaboradores');
+
             loginSchema.entrada.usuario = req.query.usuario;
             loginSchema.entrada.password = req.query.password;
             var cache = [];
+            let Schema = mongoose.Schema;
+            let UsuColaboSchema = new Schema({
+                identificacion: String,
+                password: String
+            });
+            var UsuarioColaborador = mongoose.model('UsuariosColaboradores', UsuColaboSchema);
             UsuarioColaborador
                 .find({
                     identificacion: req.query.usuario
