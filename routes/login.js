@@ -1,8 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var env = require('dotenv').config();
-var mongoose = require('mongoose');
-let Schema = mongoose.Schema;
+var UsuarioColaborador = require('../models/UsuariosColaboradores');
 let loginSchema = {
     entrada: {
         usuario: '',
@@ -13,45 +12,21 @@ let loginSchema = {
         respuesta: 'cargue inicial',
     }
 };
-
-var UsuColaboSchema = new Schema({
-    identificacion: String,
-    password: String
-});
-
-
 router.get('/', function(req, res, next) {
-
     loginSchema.entrada.usuario = req.query.usuario;
     loginSchema.entrada.password = req.query.password;
-    mongoose.connect(process.env.COSMOSDB_CONNSTR + "?ssl=true&replicaSet=globaldb", {
-            auth: {
-                user: process.env.COSMODDB_USER,
-                password: process.env.COSMOSDB_PASSWORD
-            }
+    UsuarioColaborador
+        .find({
+            identificacion: req.query.usuario
         })
-        .then(() => {
-            mongoose.model('UsuariosColaboradores', UsuColaboSchema);
-            let Usuarios = mongoose.model('UsuariosColaboradores');
-            Usuarios.find().exec(function(err, data) {
-                loginSchema.salida.codigoRespuesta = 500;
-                loginSchema.salida.respuesta = 'Logueo incorrecto DATOS: ' + data.length;
-                if (err) {
-                    loginSchema.salida.codigoRespuesta = 600;
-                    loginSchema.salida.respuesta = 'consulta con error';
-                }
-                if (data.length == 1) {
-                    if (data[0].password == loginSchema.entrada.password) {
-                        loginSchema.salida.codigoRespuesta = 0;
-                        loginSchema.salida.respuesta = 'Logueo existoso';
-                    }
-                }
-            });
+        .then(doc => {
+            loginSchema.salida.codigoRespuesta = 500;
+            loginSchema.salida.respuesta = 'Logueo incorrecto DATOS: ' + doc.length;
             res.send(loginSchema);
         })
-        .catch((err) => {
-            loginSchema.salida.codigoRespuesta = 200;
-            loginSchema.salida.respuesta = 'conexion no establecida ' + err;
+        .catch(err => {
+            loginSchema.salida.codigoRespuesta = 600;
+            loginSchema.salida.respuesta = 'consulta con error ' + err;
             res.send(loginSchema);
         });
 });
