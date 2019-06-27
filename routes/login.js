@@ -15,7 +15,7 @@ let loginSchema = {
 router.get('/', function(req, res, next) {
     loginSchema.entrada.usuario = req.query.usuario;
     loginSchema.entrada.password = req.query.password;
-    UsuarioColaborador
+    /*UsuarioColaborador
         .find({
             identificacion: req.query.usuario
         })
@@ -28,7 +28,8 @@ router.get('/', function(req, res, next) {
             loginSchema.salida.codigoRespuesta = 600;
             loginSchema.salida.respuesta = 'consulta con error ' + err;
             res.send(loginSchema);
-        });
+        });*/
+    res.send(UsuarioColaborador);
 });
 
 
