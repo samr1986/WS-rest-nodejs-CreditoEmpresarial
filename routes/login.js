@@ -15,10 +15,6 @@ let loginSchema = {
 };
 
 var UsuColaboSchema = new Schema({
-    _id: {
-        type: Schema.ObjectId,
-        ref: 'id'
-    },
     identificacion: {
         type: String,
         default: '',
@@ -47,7 +43,7 @@ router.get('/', function(req, res, next) {
             let Usuarios = mongoose.model('UsuariosColaboradores');
             Usuarios.find().exec(function(err, data) {
                 loginSchema.salida.codigoRespuesta = 500;
-                loginSchema.salida.respuesta = 'Logueo incorrecto ' + data;
+                loginSchema.salida.respuesta = 'Logueo incorrecto DATOS: ' + res.json(data);
                 if (err) {
                     loginSchema.salida.codigoRespuesta = 600;
                     loginSchema.salida.respuesta = 'consulta con error';
