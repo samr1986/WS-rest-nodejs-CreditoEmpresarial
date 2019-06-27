@@ -29,7 +29,7 @@ router.get('/', function(req, res, next) {
             loginSchema.salida.respuesta = 'consulta con error ' + err;
             res.send(loginSchema);
         });*/
-    res.send(UsuarioColaborador);
+    res.send(loginSchema);
 });
 
 
