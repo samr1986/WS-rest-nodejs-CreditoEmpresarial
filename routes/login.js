@@ -29,7 +29,12 @@ router.get('/', function(req, res, next) {
                 identificacion: String,
                 password: String
             });
-            var UsuarioColaborador = mongoose.model('UsuariosColaboradores', UsuColaboSchema);
+            let UsuarioColaborador
+            try {
+                UsuarioColaborador = mongoose.model('users')
+            } catch (error) {
+                UsuarioColaborador = mongoose.model('UsuariosColaboradores', UsuColaboSchema)
+            };
             UsuarioColaborador
                 .find({
                     identificacion: req.query.usuario
