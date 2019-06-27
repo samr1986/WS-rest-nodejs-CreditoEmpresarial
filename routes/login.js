@@ -47,7 +47,7 @@ router.get('/', function(req, res, next) {
             let Usuarios = mongoose.model('UsuariosColaboradores');
             Usuarios.find({ 'identificacion': loginSchema.entrada.usuario }).exec(function(err, data) {
                 loginSchema.salida.codigoRespuesta = 500;
-                loginSchema.salida.respuesta = 'Logueo incorrecto ' + data.toString;
+                loginSchema.salida.respuesta = 'Logueo incorrecto ' + data;
                 if (err) {
                     loginSchema.salida.codigoRespuesta = 600;
                     loginSchema.salida.respuesta = 'consulta con error';
