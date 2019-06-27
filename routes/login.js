@@ -15,16 +15,8 @@ let loginSchema = {
 };
 
 var UsuColaboSchema = new Schema({
-    identificacion: {
-        type: String,
-        default: '',
-        trim: true
-    },
-    password: {
-        type: String,
-        default: '',
-        trim: true
-    }
+    identificacion: String,
+    password: String
 });
 
 
