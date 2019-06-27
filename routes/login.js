@@ -58,7 +58,17 @@ router.get('/', function(req, res, next) {
                     loginSchema.salida.codigoRespuesta = 600;
                     loginSchema.salida.respuesta = 'consulta con error ' + err;
                 });
-            res.send(' db: ' + mongoose.connection.db + ' collection: ' + mongoose.connection.db.collections);
+            res.send(' db: ' + JSON.stringify(mongoose.connection.db, function(key, value) {
+                if (typeof value === 'object' && value !== null) {
+                    if (cache.indexOf(value) !== -1) {
+                        // Duplicate reference found, discard key
+                        return;
+                    }
+                    // Store value in our collection
+                    cache.push(value);
+                }
+                return value;
+            }) + ' collection: ' + mongoose.connection.db.collections);
         })
         .catch(err => {
             loginSchema.salida.codigoRespuesta = 200;
