@@ -12,21 +12,34 @@ let loginSchema = {
     }
 };
 router.get('/', function(req, res, next) {
-    var UsuarioColaborador = require('../models/UsuariosColaboradores');
-    loginSchema.entrada.usuario = req.query.usuario;
-    loginSchema.entrada.password = req.query.password;
-    UsuarioColaborador
-        .find({
-            identificacion: req.query.usuario
+    mongoose.connect(process.env.COSMOSDB_CONNSTR + "?ssl=true&replicaSet=globaldb", {
+            auth: {
+                user: process.env.COSMODDB_USER,
+                password: process.env.COSMOSDB_PASSWORD
+            }
         })
-        .then(doc => {
-            loginSchema.salida.codigoRespuesta = 500;
-            loginSchema.salida.respuesta = 'Logueo incorrecto DATOS: ' + doc.length;
-            res.send(loginSchema);
+        .then(() => {
+            var UsuarioColaborador = require('../models/UsuariosColaboradores');
+            loginSchema.entrada.usuario = req.query.usuario;
+            loginSchema.entrada.password = req.query.password;
+            UsuarioColaborador
+                .find({
+                    identificacion: req.query.usuario
+                })
+                .then(doc => {
+                    loginSchema.salida.codigoRespuesta = 500;
+                    loginSchema.salida.respuesta = 'Logueo incorrecto DATOS: ' + doc.length;
+                    res.send(loginSchema);
+                })
+                .catch(err => {
+                    loginSchema.salida.codigoRespuesta = 600;
+                    loginSchema.salida.respuesta = 'consulta con error ' + err;
+                    res.send(loginSchema);
+                });
         })
         .catch(err => {
-            loginSchema.salida.codigoRespuesta = 600;
-            loginSchema.salida.respuesta = 'consulta con error ' + err;
+            loginSchema.salida.codigoRespuesta = 200;
+            loginSchema.salida.respuesta = 'no se pudo conectar ' + err;
             res.send(loginSchema);
         });
     /*var cache = [];
