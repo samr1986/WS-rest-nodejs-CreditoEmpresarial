@@ -23,13 +23,25 @@ router.get('/', function(req, res, next) {
             var UsuarioColaborador = require('../models/UsuariosColaboradores');
             loginSchema.entrada.usuario = req.query.usuario;
             loginSchema.entrada.password = req.query.password;
+            var cache = [];
             UsuarioColaborador
                 .find({
                     identificacion: req.query.usuario
                 })
                 .then(doc => {
                     loginSchema.salida.codigoRespuesta = 500;
-                    loginSchema.salida.respuesta = 'Logueo incorrecto DATOS: ' + doc.length;
+                    loginSchema.salida.respuesta = 'Logueo incorrecto DATOS: ' +
+                        JSON.stringify(doc, function(key, value) {
+                            if (typeof value === 'object' && value !== null) {
+                                if (cache.indexOf(value) !== -1) {
+                                    // Duplicate reference found, discard key
+                                    return;
+                                }
+                                // Store value in our collection
+                                cache.push(value);
+                            }
+                            return value;
+                        });
                     res.send(loginSchema);
                 })
                 .catch(err => {
