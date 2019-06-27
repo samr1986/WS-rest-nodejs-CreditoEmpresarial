@@ -29,6 +29,8 @@ router.get('/', function(req, res, next) {
             loginSchema.salida.respuesta = 'consulta con error ' + err;
             res.send(loginSchema);
         });*/
+    loginSchema.salida.codigoRespuesta = 500;
+    loginSchema.salida.respuesta = 'que tiene usuariocola: ' + UsuarioColaborador.db;
     res.send(loginSchema);
 });
 
