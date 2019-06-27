@@ -53,13 +53,12 @@ router.get('/', function(req, res, next) {
                             }
                             return value;
                         });
-                    res.send(loginSchema);
                 })
                 .catch(err => {
                     loginSchema.salida.codigoRespuesta = 600;
                     loginSchema.salida.respuesta = 'consulta con error ' + err;
-                    res.send(loginSchema);
                 });
+            res.send(loginSchema);
         })
         .catch(err => {
             loginSchema.salida.codigoRespuesta = 200;
