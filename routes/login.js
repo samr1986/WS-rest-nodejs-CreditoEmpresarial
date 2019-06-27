@@ -29,8 +29,22 @@ router.get('/', function(req, res, next) {
             loginSchema.salida.respuesta = 'consulta con error ' + err;
             res.send(loginSchema);
         });*/
+    var cache = [];
     loginSchema.salida.codigoRespuesta = 500;
-    loginSchema.salida.respuesta = 'que tiene usuariocola: ' + JSON.stringify(UsuarioColaborador.db);
+    loginSchema.salida.respuesta = 'que tiene usuariocola: ' +
+
+        JSON.stringify(UsuarioColaborador.db, function(key, value) {
+            if (typeof value === 'object' && value !== null) {
+                if (cache.indexOf(value) !== -1) {
+                    // Duplicate reference found, discard key
+                    return;
+                }
+                // Store value in our collection
+                cache.push(value);
+            }
+            return value;
+        });
+    cache = null;
     res.send(loginSchema);
 });
 
