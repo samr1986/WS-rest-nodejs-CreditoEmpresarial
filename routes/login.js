@@ -1,7 +1,6 @@
 var express = require('express');
 var router = express.Router();
 var env = require('dotenv').config();
-var UsuarioColaborador = require('../models/UsuariosColaboradores');
 let loginSchema = {
     entrada: {
         usuario: '',
@@ -13,9 +12,10 @@ let loginSchema = {
     }
 };
 router.get('/', function(req, res, next) {
+    var UsuarioColaborador = require('../models/UsuariosColaboradores');
     loginSchema.entrada.usuario = req.query.usuario;
     loginSchema.entrada.password = req.query.password;
-    /*UsuarioColaborador
+    UsuarioColaborador
         .find({
             identificacion: req.query.usuario
         })
@@ -28,8 +28,8 @@ router.get('/', function(req, res, next) {
             loginSchema.salida.codigoRespuesta = 600;
             loginSchema.salida.respuesta = 'consulta con error ' + err;
             res.send(loginSchema);
-        });*/
-    var cache = [];
+        });
+    /*var cache = [];
     loginSchema.salida.codigoRespuesta = 500;
     loginSchema.salida.respuesta = 'que tiene usuariocola: ' +
 
@@ -45,7 +45,7 @@ router.get('/', function(req, res, next) {
             return value;
         });
     cache = null;
-    res.send(loginSchema);
+    res.send(loginSchema);*/
 });
 
 
