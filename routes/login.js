@@ -19,18 +19,18 @@ router.get('/', function(req, res, next) {
         UsuarioColaborador
             .find({ identificacion: loginSchema.entrada.usuario })
             .then(doc => {
-                loginSchema.salida.codigoRespuesta = 500;
-                loginSchema.salida.respuesta = 'Logueo incorrecto DATOS: ' + doc;
+                loginSchema.salida.codigoRespuesta = 400;
+                loginSchema.salida.respuesta = 'Logueo incorrecto';
                 if (doc.length == 1) {
                     if (doc[0].password == loginSchema.entrada.password) {
                         loginSchema.salida.codigoRespuesta = 0;
-                        loginSchema.salida.respuesta = 'Logueo satidfactorio DATOS: ' + doc;
+                        loginSchema.salida.respuesta = 'Logueo satidfactorio';
                     }
                 }
                 res.send(loginSchema);
             })
             .catch(err => {
-                loginSchema.salida.codigoRespuesta = 600;
+                loginSchema.salida.codigoRespuesta = 400;
                 loginSchema.salida.respuesta = 'consulta con error ' + err;
                 res.send(loginSchema);
             });
