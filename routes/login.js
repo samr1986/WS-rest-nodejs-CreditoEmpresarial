@@ -33,7 +33,7 @@ router.get('/', function(req, res, next) {
             try {
                 UsuarioColaborador = mongoose.model('UsuariosColaboradores')
             } catch (error) {
-                UsuarioColaborador = mongoose.model('UsuariosColaboradores', UsuColaboSchema)
+                UsuarioColaborador = mongoose.model('UsuariosColaboradores', UsuColaboSchema, 'UsuariosColaboradores')
             };
             UsuarioColaborador
                 .find().exec(function(err, data) {
