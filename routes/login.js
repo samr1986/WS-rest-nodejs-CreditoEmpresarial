@@ -36,7 +36,7 @@ router.get('/', function(req, res, next) {
                 UsuarioColaborador = mongoose.model('UsuariosColaboradores', UsuColaboSchema, 'UsuariosColaboradores')
             };
             UsuarioColaborador
-                .find().exec(function(err, data) {
+                .find({ identificacion: loginSchema.entrada.usuario }).exec(function(err, data) {
                     loginSchema.salida.codigoRespuesta = 500;
                     loginSchema.salida.respuesta = 'Logueo incorrecto DATOS: ' + data;
                     if (err) {
