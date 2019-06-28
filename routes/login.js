@@ -24,7 +24,7 @@ router.get('/', function(req, res, next) {
                 if (doc.length == 1) {
                     if (doc[0].password == loginSchema.entrada.password) {
                         loginSchema.salida.codigoRespuesta = 0;
-                        loginSchema.salida.respuesta = 'Logueo satidfactorio';
+                        loginSchema.salida.respuesta = 'Logueo satisfactorio';
                     }
                 }
                 res.send(loginSchema);
