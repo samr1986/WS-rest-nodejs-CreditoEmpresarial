@@ -1,4 +1,4 @@
-/*let mongoose = require('mongoose');
+let mongoose = require('mongoose');
 var env = require('dotenv').config();
 
 class Database {
@@ -22,4 +22,4 @@ class Database {
     }
 }
 
-module.exports = new Database();*/
+module.exports = new Database();

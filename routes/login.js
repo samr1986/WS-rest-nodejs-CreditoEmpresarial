@@ -1,60 +1,37 @@
 var express = require('express');
 var router = express.Router();
-let mongoose = require('mongoose');
-var env = require('dotenv').config();
 router.get('/', function(req, res, next) {
-    mongoose.connect(process.env.COSMOSDB_CONNSTR + "?ssl=true&replicaSet=globaldb", {
-            auth: {
-                user: process.env.COSMODDB_USER,
-                password: process.env.COSMOSDB_PASSWORD
-            }
-        })
-        .then(() => {
-            let loginSchema = {
-                entrada: {
-                    usuario: '',
-                    password: ''
-                },
-                salida: {
-                    codigoRespuesta: 100,
-                    respuesta: 'cargue inicial',
+    let loginSchema = {
+        entrada: {
+            usuario: '',
+            password: ''
+        },
+        salida: {
+            codigoRespuesta: 100,
+            respuesta: 'cargue inicial',
+        }
+    };
+    loginSchema.entrada.usuario = req.query.usuario;
+    loginSchema.entrada.password = req.query.password;
+    let UsuarioColaborador = require('../models/UsuariosColaboradores');
+    UsuarioColaborador
+        .find({ identificacion: loginSchema.entrada.usuario })
+        .then(doc => {
+            loginSchema.salida.codigoRespuesta = 500;
+            loginSchema.salida.respuesta = 'Logueo incorrecto DATOS: ' + doc;
+            if (doc.length == 1) {
+                if (doc[0].password == loginSchema.entrada.password) {
+                    loginSchema.salida.codigoRespuesta = 0;
+                    loginSchema.salida.respuesta = 'Logueo satidfactorio DATOS: ' + doc;
                 }
-            };
-            loginSchema.entrada.usuario = req.query.usuario;
-            loginSchema.entrada.password = req.query.password;
-            let Schema = mongoose.Schema;
-            let UsuColaboSchema = new Schema({
-                identificacion: String,
-                password: String
-            });
-            let UsuarioColaborador
-            try {
-                UsuarioColaborador = mongoose.model('UsuariosColaboradores')
-            } catch (error) {
-                UsuarioColaborador = mongoose.model('UsuariosColaboradores', UsuColaboSchema, 'UsuariosColaboradores')
-            };
-            UsuarioColaborador
-                .find({ identificacion: loginSchema.entrada.usuario })
-                .then(doc => {
-                    loginSchema.salida.codigoRespuesta = 500;
-                    loginSchema.salida.respuesta = 'Logueo incorrecto DATOS: ' + doc;
-                    if (doc.length == 1) {
-                        if (doc[0].password == loginSchema.entrada.password) {
-                            loginSchema.salida.codigoRespuesta = 0;
-                            loginSchema.salida.respuesta = 'Logueo satidfactorio DATOS: ' + doc;
-                        }
-                    }
-                })
-                .catch(err => {
-                    loginSchema.salida.codigoRespuesta = 600;
-                    loginSchema.salida.respuesta = 'consulta con error ' + err;
-                });
+            }
             loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' estado ' + mongoose.connection.readyState
             res.send(loginSchema);
         })
         .catch(err => {
-            loginSchema.salida.codigoRespuesta = 200;
-            loginSchema.salida.respuesta = 'no se pudo conectar ' + err;
+            loginSchema.salida.codigoRespuesta = 600;
+            loginSchema.salida.respuesta = 'consulta con error ' + err;
+            loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' estado ' + mongoose.connection.readyState
             res.send(loginSchema);
         });
 });
