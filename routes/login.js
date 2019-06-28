@@ -37,7 +37,7 @@ router.get('/', function(req, res, next) {
             };
             UsuarioColaborador
                 .find({ identificacion: loginSchema.entrada.usuario })
-            then(doc => {
+                .then(doc => {
                     loginSchema.salida.codigoRespuesta = 500;
                     loginSchema.salida.respuesta = 'Logueo incorrecto DATOS: ' + doc;
                     if (doc.password == loginSchema.entrada.password) {
