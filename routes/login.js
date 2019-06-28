@@ -15,7 +15,7 @@ router.get('/', function(req, res, next) {
     loginSchema.entrada.usuario = req.query.usuario;
     loginSchema.entrada.password = req.query.password;
     let UsuarioColaborador = require('../models/UsuariosColaboradores');
-    UsuarioColaborador
+    /*UsuarioColaborador
         .find({ identificacion: loginSchema.entrada.usuario })
         .then(doc => {
             loginSchema.salida.codigoRespuesta = 500;
@@ -34,7 +34,9 @@ router.get('/', function(req, res, next) {
             loginSchema.salida.respuesta = 'consulta con error ' + err;
             loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' estado ' + mongoose.connection.readyState
             res.send(loginSchema);
-        });
+        });*/
+    loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' estado ' + mongoose.connection.readyState
+    res.send(loginSchema);
 });
 
 
