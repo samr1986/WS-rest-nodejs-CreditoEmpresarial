@@ -36,39 +36,19 @@ router.get('/', function(req, res, next) {
                 UsuarioColaborador = mongoose.model('UsuariosColaboradores', UsuColaboSchema, 'UsuariosColaboradores')
             };
             UsuarioColaborador
-                .find({ identificacion: loginSchema.entrada.usuario }).exec(function(err, data) {
+                .find({ identificacion: loginSchema.entrada.usuario })
+            then(doc => {
                     loginSchema.salida.codigoRespuesta = 500;
-                    loginSchema.salida.respuesta = 'Logueo incorrecto DATOS: ' + data;
-                    if (err) {
-                        loginSchema.salida.codigoRespuesta = 600;
-                        loginSchema.salida.respuesta = 'consulta con error';
+                    loginSchema.salida.respuesta = 'Logueo incorrecto DATOS: ' + doc;
+                    if (doc.password == loginSchema.entrada.password) {
+                        loginSchema.salida.codigoRespuesta = 0;
+                        loginSchema.salida.respuesta = 'Logueo satidfactorio DATOS: ' + doc;
                     }
-                    if (data.length == 1) {
-                        if (data[0].password == loginSchema.entrada.password) {
-                            loginSchema.salida.codigoRespuesta = 0;
-                            loginSchema.salida.respuesta = 'Logueo existoso';
-                        }
-                    }
-                })
-                /*.then(doc => {
-                    loginSchema.salida.codigoRespuesta = 500;
-                    loginSchema.salida.respuesta = 'Logueo incorrecto DATOS: ' +
-                        JSON.stringify(doc, function(key, value) {
-                            if (typeof value === 'object' && value !== null) {
-                                if (cache.indexOf(value) !== -1) {
-                                    // Duplicate reference found, discard key
-                                    return;
-                                }
-                                // Store value in our collection
-                                cache.push(value);
-                            }
-                            return value;
-                        });
                 })
                 .catch(err => {
                     loginSchema.salida.codigoRespuesta = 600;
                     loginSchema.salida.respuesta = 'consulta con error ' + err;
-                });*/
+                });
             res.send(loginSchema);
         })
         .catch(err => {
@@ -76,23 +56,6 @@ router.get('/', function(req, res, next) {
             loginSchema.salida.respuesta = 'no se pudo conectar ' + err;
             res.send(loginSchema);
         });
-    /*var cache = [];
-    loginSchema.salida.codigoRespuesta = 500;
-    loginSchema.salida.respuesta = 'que tiene usuariocola: ' +
-
-        JSON.stringify(UsuarioColaborador.db, function(key, value) {
-            if (typeof value === 'object' && value !== null) {
-                if (cache.indexOf(value) !== -1) {
-                    // Duplicate reference found, discard key
-                    return;
-                }
-                // Store value in our collection
-                cache.push(value);
-            }
-            return value;
-        });
-    cache = null;
-    res.send(loginSchema);*/
 });
 
 
