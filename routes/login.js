@@ -38,7 +38,7 @@ router.get('/', function(req, res, next) {
             UsuarioColaborador
                 .find().exec(function(err, data) {
                     loginSchema.salida.codigoRespuesta = 500;
-                    loginSchema.salida.respuesta = 'Logueo incorrecto DATOS: ' + data.length;
+                    loginSchema.salida.respuesta = 'Logueo incorrecto DATOS: ' + data;
                     if (err) {
                         loginSchema.salida.codigoRespuesta = 600;
                         loginSchema.salida.respuesta = 'consulta con error';
