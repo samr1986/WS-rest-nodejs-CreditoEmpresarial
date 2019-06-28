@@ -40,7 +40,7 @@ router.get('/', function(req, res, next) {
                 .then(doc => {
                     loginSchema.salida.codigoRespuesta = 500;
                     loginSchema.salida.respuesta = 'Logueo incorrecto DATOS: ' + doc;
-                    if (doc.password == loginSchema.entrada.password) {
+                    if (doc[0].password == loginSchema.entrada.password) {
                         loginSchema.salida.codigoRespuesta = 0;
                         loginSchema.salida.respuesta = 'Logueo satidfactorio DATOS: ' + doc;
                     }
