@@ -2,16 +2,6 @@ var express = require('express');
 var router = express.Router();
 let mongoose = require('mongoose');
 var env = require('dotenv').config();
-let loginSchema = {
-    entrada: {
-        usuario: '',
-        password: ''
-    },
-    salida: {
-        codigoRespuesta: 100,
-        respuesta: 'cargue inicial',
-    }
-};
 router.get('/', function(req, res, next) {
     mongoose.connect(process.env.COSMOSDB_CONNSTR + "?ssl=true&replicaSet=globaldb", {
             auth: {
@@ -20,10 +10,18 @@ router.get('/', function(req, res, next) {
             }
         })
         .then(() => {
-
+            let loginSchema = {
+                entrada: {
+                    usuario: '',
+                    password: ''
+                },
+                salida: {
+                    codigoRespuesta: 100,
+                    respuesta: 'cargue inicial',
+                }
+            };
             loginSchema.entrada.usuario = req.query.usuario;
             loginSchema.entrada.password = req.query.password;
-            var cache = [];
             let Schema = mongoose.Schema;
             let UsuColaboSchema = new Schema({
                 identificacion: String,
@@ -40,9 +38,11 @@ router.get('/', function(req, res, next) {
                 .then(doc => {
                     loginSchema.salida.codigoRespuesta = 500;
                     loginSchema.salida.respuesta = 'Logueo incorrecto DATOS: ' + doc;
-                    if (doc[0].password == loginSchema.entrada.password) {
-                        loginSchema.salida.codigoRespuesta = 0;
-                        loginSchema.salida.respuesta = 'Logueo satidfactorio DATOS: ' + doc;
+                    if (doc.length == 1) {
+                        if (doc[0].password == loginSchema.entrada.password) {
+                            loginSchema.salida.codigoRespuesta = 0;
+                            loginSchema.salida.respuesta = 'Logueo satidfactorio DATOS: ' + doc;
+                        }
                     }
                 })
                 .catch(err => {
