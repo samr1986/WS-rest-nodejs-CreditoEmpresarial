@@ -49,6 +49,7 @@ router.get('/', function(req, res, next) {
                     loginSchema.salida.codigoRespuesta = 600;
                     loginSchema.salida.respuesta = 'consulta con error ' + err;
                 });
+            loginSchema.salida.respuesta = loginSchema.salida.respuesta + ' estado ' + mongoose.connection.readyState
             res.send(loginSchema);
         })
         .catch(err => {
