@@ -1,7 +1,5 @@
-let mongoose = require('mongoose');
+require('../models/database');
 let Schema = mongoose.Schema;
-
-let db = require('../database');
 let UsuColaboSchema = new Schema({
     identificacion: String,
     password: String
