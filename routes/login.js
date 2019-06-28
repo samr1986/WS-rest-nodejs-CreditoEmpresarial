@@ -14,7 +14,7 @@ router.get('/', function(req, res, next) {
     };
     loginSchema.entrada.usuario = req.query.usuario;
     loginSchema.entrada.password = req.query.password;
-    let UsuarioColaborador = require('../models/UsuariosColaboradores');
+    //let UsuarioColaborador = require('../models/UsuariosColaboradores');
     /*UsuarioColaborador
         .find({ identificacion: loginSchema.entrada.usuario })
         .then(doc => {
