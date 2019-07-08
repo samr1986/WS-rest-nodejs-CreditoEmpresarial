@@ -31,7 +31,7 @@ router.get('/', function(req, res, next) {
                 if (doc.length >= 1) {
                     UtilizacionesSchema.salida.codigoRespuesta = 0;
                     UtilizacionesSchema.salida.respuesta = 'transaccion exitosa';
-                    UtilizacionesSchema.salida.ExcepcionesSubsables = doc;
+                    UtilizacionesSchema.salida.Utilizaciones = doc;
                 }
                 res.send(UtilizacionesSchema);
             })
